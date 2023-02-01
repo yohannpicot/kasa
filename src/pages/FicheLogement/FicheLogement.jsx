@@ -14,14 +14,14 @@ function FicheLogement() {
 	const params = useParams();
 	// Permet de re diriger vers une autre route
 	const Navigate = useNavigate();
-	// Récuperer les donner selectionner par le user
+	/* On utilise ici useState afin de récupere les donner saisi par l'utilisateur (choix de l'appartement) */
 	const [chooseAppart, setChooseAppart] = useState();
 	useEffect(() => {
 		const getData = async () => {
 			/*Sur les logements j'ai utiliser axio afin d'anticiper le passage sur l'api,
 			 afin de faciliter la transition */
 			const res = await axios.get("/logements.json"); 
-			// On recupere l'id 
+			// On recupere l'id si l'id n'est pas bon on re dirige vers la 404
 			const choose = res.data.find(({ id }) => id === params.id);
 			res.data.map(() => setChooseAppart(choose));
 			// Condition si l'id n'est pas bon on renvoie vers la page Error 404
@@ -36,7 +36,9 @@ function FicheLogement() {
 	const slidePictures = (chooseAppart && chooseAppart.pictures);
 	const tags = (chooseAppart && chooseAppart.tags);
 	const equipments = (chooseAppart && chooseAppart.equipments);
+	// Props configuration passer a l'élement parrent 
 	const equip = chooseAppart && equipments.map((item, index) => (
+		// on vient récuperer les donner des props avec la déstructuration au niveau de l'élement enfant 
 			<li key={index} className="equipList">
 				{item}
 			</li>
